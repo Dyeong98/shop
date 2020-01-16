@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="SortMapper">
+
+	<select id="selectProductSortList" parameterType="java.util.HashMap" resultType="kr.co.lnssoft.assistshop.ProductVO">
+			SELECT spt_no, spt_type1_no, spt_type2_no, spt_style_type_no, spt_thumbnail
+                 , spt_name ,spt_price , spt_hits_cnt, spt_like_count, spt_status
+                 , spt_review_cnt, spt_review_avg, spt_seller_id, rn
+			  FROM (SELECT spt_no, spt_type1_no, spt_type2_no, spt_style_type_no, spt_thumbnail
+                         , spt_name ,spt_price , spt_hits_cnt, spt_like_count, spt_status
+                         , spt_review_cnt, spt_review_avg, spt_seller_id, rn
+			          FROM (select spt_no, spt_type1_no, spt_type2_no, spt_style_type_no, spt_thumbnail
+                                 , spt_name ,spt_price , spt_hits_cnt, spt_like_count, spt_status
+                                 , spt_review_cnt, spt_review_avg, spt_seller_id
+				                <choose>
+				                	<when test='sort_type.equals("0")'>
+			                     		, ROW_NUMBER () OVER (ORDER BY spt_no desc) as rn
+		                     		</when>
+				                	<when test='sort_type.equals("1")'>
+			                     		, ROW_NUMBER () OVER (ORDER BY spt_like_count desc) as rn desc) as rn
+		                     		</when>
+				                	<when test='sort_type.equals("2")'>
+			                     		, ROW_NUMBER () OVER (ORDER BY spt_hits_cnt desc) as rn
+		                     		</when>
+				                	<when test='sort_type.equals("3")'>
+			                     		, ROW_NUMBER () OVER (ORDER BY spt_price desc) as rn
+		                     		</when>
+				                	<when test='sort_type.equals("4")'>
+			                     		, ROW_NUMBER () OVER (ORDER BY spt_price asc) as rn
+		                     		</when>
+		                     	</choose>
+			                  from SHOP_PRODUCT
+                             where spt_type1_no = #{ptn1}
+                             <if test='ptn2 != null and !ptn2.equals("") and !ptn2.equals("0")'>
+                               and spt_type2_no = #{ptn2}
+                             </if>
+                               and spt_status = 1) origin
+		<![CDATA[
+			         where rn <= #{endRNum})
+			 WHERE rn >= #{beginRNum}
+		]]>
+	</select>
+	
+	<select id="selectProductSortTyleCnt" resultType="kr.co.lnssoft.assistshop.SortTyleCntVO" parameterType="java.util.HashMap">
+		SELECT  ptt_type1_nm, ptt_type2_no, ptt_type2_nm, spt_type2_no, decode(spt_type2_no, null, 0, typecnt) as typecnt
+		  FROM (SELECT spt_type2_no, COUNT(spt_type2_no) AS typeCnt
+		          FROM SHOP_PRODUCT
+		         WHERE spt_type1_no = #{ptn1} 
+		           AND spt_status = 1
+		         GROUP BY spt_type2_no) origin
+		     , SHOP_PRODUCT_TYPE spt
+		 WHERE spt.ptt_type2_no = origin.spt_type2_no(+)
+		   AND spt.ptt_type1_no = #{ptn1}
+		   AND spt.ptt_type2_nm is not null
+		 ORDER BY ptt_type2_no
+	</select>
+	
+	<select id="selectProductSortListTotal" resultType="int" parameterType="java.util.HashMap">
+		SELECT COUNT(spt_no) AS totalCnt
+ 		  FROM SHOP_PRODUCT
+         WHERE spt_type1_no = #{ptn1}
+           AND spt_status = 1
+	</select>
+</mapper>

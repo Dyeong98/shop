@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="JoinMapper">
+
+	<select id="joinIDChk"
+			parameterType="java.lang.String"
+			resultType="int">
+		select count(*) from mbr where mbr_id = #{mbr_id}
+	</select>
+
+	<insert id="joinIns"
+			parameterType="kr.co.lnssoft.swhire.VOMbr">
+        <selectKey resultType="String" keyProperty="mbr_no" order="BEFORE">
+            SELECT mbr_no_seq.nextval FROM dual
+        </selectKey>
+		insert into mbr values(#{mbr_no}
+			,#{mbr_id},#{mbr_nm},#{mbr_pwd}
+			,#{mbr_tel},#{mbr_email},#{mbr_level}
+		)
+	</insert>
+
+	<insert id="joinInsCmpn"
+			parameterType="kr.co.lnssoft.swhire.VOMbr">
+		insert into mbr_cmpn values(#{mbr_no}
+			,#{cmpn_reg_no},#{cmpn_nm},#{cmpn_ceo_nm}
+			,#{cmpn_start_date},#{cmpn_addr},#{cmpn_desc}
+		)
+	</insert>
+
+</mapper>

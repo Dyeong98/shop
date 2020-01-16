@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="ShopProductTypeMapper">
+	
+	<select resultType="kr.co.lnssoft.assistshop.PttVO" parameterType="java.util.List" id="selectproductType1">
+		select ptt_type1_no, ptt_type1_nm, ptt_comment
+		  from shop_product_type
+         where PTT_TYPE2_NO is null
+         order by ptt_type1_no
+	</select>
+	
+	<select resultType="kr.co.lnssoft.assistshop.PttVO" parameterType="java.util.HashMap" id="selectproductType2">
+		select ptt_type1_no, ptt_type1_nm, ptt_type2_no, ptt_type2_nm, ptt_comment
+		  from shop_product_type
+		 where ptt_type2_no is not null
+           and ptt_type1_no = #{ptt_type1_no}
+         order by ptt_type2_no
+	</select>
+	
+</mapper>

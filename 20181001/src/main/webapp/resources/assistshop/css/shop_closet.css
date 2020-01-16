@@ -1,0 +1,7 @@
+@charset "EUC-KR";
+
+.drag{
+	position:relative;
+	z-index: 100;
+	max-width: 200px;
+}

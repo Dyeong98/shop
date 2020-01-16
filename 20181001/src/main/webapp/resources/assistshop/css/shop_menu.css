@@ -1,0 +1,43 @@
+@charset "EUC-KR";
+#shop_header :hover, #shop_header:visited, #shop_header:link{
+	text-decoration: none;
+	color: black;
+}
+#top_my_menu > li:hover, #top_my_menu > li:visited, #top_my_menu > li:link{
+	text-decoration: none;
+	color: black;
+}
+#search_div{
+	margin-top: 65px;
+}
+.contents_padding_top{
+	margin-top: 70px;
+}
+#side_menu{
+	position : fixed;
+	display: inline-block;
+	right: 0%;
+	bottom: 10%;
+	z-index: 1;
+}
+#nav_search_form{
+	margin-right : 0px;
+	overflow:auto;
+	
+}
+#nav_search_txt{
+	display: inline-block;
+}
+
+#top_my_menu > li{
+	float: right;
+}
+
+#nav_ul{
+	float: none;
+}
+
+#navbar > ul > li{
+	float:none;
+	display: inline-block;
+}

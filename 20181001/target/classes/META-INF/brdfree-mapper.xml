@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BrdFreeMapper">
+
+	<select id="brdFreeList"
+			parameterType="java.util.HashMap"
+			resultType="kr.co.lnssoft.swhire.VOBrdFree">
+	select no, title, writer,
+			write_date, view_cnt, like_cnt
+	from (select no, title, writer,
+			write_date, view_cnt, like_cnt
+	        , ROW_NUMBER() OVER (ORDER BY no desc) rn
+		from brd_free) origin
+	where rn between #{beginRNum} and #{endRNum}
+	</select>
+
+	<select id="brdFreeListCnt" resultType="int">
+		select count(no) totalCnt
+		from brd_free
+	</select>
+
+	<insert id="insBrdFree" parameterType="kr.co.lnssoft.swhire.VOBrdFree">
+	insert into brd_free (no, title, writer, contents, write_date
+		, view_cnt, like_cnt, write_mbr_no
+		<if test="atch_file_nm != null and atch_file_nm != ''">
+			, atch_file_nm
+		</if>
+	) values(brd_free_no_seq.nextval
+		, #{title}, #{writer}, #{contents}, sysdate, 0, 0, #{write_mbr_no}
+		<if test="atch_file_nm != null and atch_file_nm != ''">
+			, #{atch_file_nm}
+		</if>
+	)
+	</insert>
+
+	<update id="updateBrdFreeViewCnt" parameterType="kr.co.lnssoft.swhire.VOBrdFree">
+	update brd_free set view_cnt = view_cnt + 1
+	where no = #{no}
+	</update>
+
+	<select id="brdFreeDetail"
+			parameterType="kr.co.lnssoft.swhire.VOBrdFree"
+			resultType="kr.co.lnssoft.swhire.VOBrdFree">
+	select no, title, writer, contents
+		, write_date, view_cnt, like_cnt, write_mbr_no, atch_file_nm
+	from brd_free
+	where no = #{no}
+	</select>
+
+	<update id="updBrdFreeLikeCnt" parameterType="java.lang.String">
+		update brd_free set like_cnt = like_cnt + 1
+		where no = #{no}
+	</update>
+
+	<select id="brdFreeLikeCnt"
+			parameterType="java.lang.String"
+			resultType="java.lang.String">
+	select like_cnt from brd_free
+	where no = #{no}
+	</select>
+
+	<delete id="delBrdFree" parameterType="kr.co.lnssoft.swhire.VOBrdFree">
+	delete from brd_free where no = #{no}
+	</delete>
+
+	<update id="delBrdFreeFile" parameterType="kr.co.lnssoft.swhire.VOBrdFree">
+	update brd_free
+		set atch_file_nm = null
+	where no = #{no}
+	</update>
+
+	<update id="updBrdFree" parameterType="kr.co.lnssoft.swhire.VOBrdFree">
+	update brd_free
+		set title = #{title}
+		, writer = #{writer}
+		, contents = #{contents}
+		<if test="atch_file_nm != null and atch_file_nm != ''">
+			, atch_file_nm = #{atch_file_nm}
+		</if>
+	where no = #{no}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

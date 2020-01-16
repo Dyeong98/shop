@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="OrderMapper">
+
+	<insert parameterType="kr.co.lnssoft.assistshop.OrderVO" id="insertOrderCart">
+        <selectKey resultType="String" keyProperty="sct_no" order="BEFORE">
+            SELECT SHOP_CART_NO_SEQ.nextval FROM dual
+        </selectKey>
+		INSERT INTO SHOP_CART
+			  	( sct_no
+				, user_no
+				, spt_no
+				, spt_thumbnail
+				, spt_name
+				, spt_price
+				, spt_count
+				, spt_delivery_price
+				, sct_color
+				, sct_size
+				, sct_price
+				, spt_seller_id
+				, sct_ins_no
+				, sct_ins_date
+				, sct_ins_ip)
+		values( #{sct_no}
+			  , #{user_no}
+			  , #{spt_no}
+			  , #{spt_thumbnail}
+			  , #{spt_name}
+			  , #{spt_price}
+			  , #{spt_count}
+			  , #{spt_delivery_price}
+			  , #{sct_color}
+			  , #{sct_size}
+			  , #{spo_price}
+			  , #{spt_seller_id}
+			  , #{spo_ins_no}
+			  , sysdate
+			  , #{spo_ins_ip})
+	</insert>
+	
+	<select id="selectOrderCart" parameterType="kr.co.lnssoft.assistshop.OrderVO" resultType="kr.co.lnssoft.assistshop.CartVO">
+		SELECT sct_no, spt_no, spt_thumbnail, spt_name, spt_price, spt_count, decode(spt_delivery_price, 0, '배송비무료', spt_delivery_price) as spt_delivery_price
+			 , sct_color, sct_size, sct_price, spt_seller_id
+		  FROM SHOP_CART
+		 WHERE user_no = #{user_no}
+		   AND sct_no = #{sct_no}
+	</select>
+	
+	<select id="selectProductCnt" resultType="int" parameterType="java.util.HashMap">
+		SELECT spt_count
+ 		  FROM SHOP_PRODUCT
+         WHERE spt_no = #{spt_no}
+	</select>
+	
+	<update id="updateProductCnt" parameterType="java.util.HashMap">
+		UPDATE SHOP_PRODUCT
+		   SET spt_count = #{pro_cnt}
+		 WHERE spt_no = #{spt_no}
+	</update>
+	
+	<insert id="insertOrder" parameterType="kr.co.lnssoft.assistshop.OrderVO">
+		INSERT INTO SHOP_PRODUCT_ORDER
+			  	( spo_no
+				, user_no
+				, spt_no
+				, spt_thumbnail
+				, spt_name
+				, spt_price
+				, spt_count
+				, spt_delivery_price
+				, sct_color
+				, sct_size
+				, spo_price
+				, spt_seller_id
+				, sct_no
+				, spo_name
+				, spo_phone
+				, spo_post_code
+				, spo_addr1
+				, spo_addr2
+				, spo_msg
+				, spo_payment
+				, spo_ins_no
+				, spo_ins_date
+				, spo_ins_ip)
+		VALUES( SHOP_PRODUCT_ORDER_NO_SEQ.nextval
+			    , #{user_no}
+				, #{spt_no}
+				, #{spt_thumbnail}
+				, #{spt_name}
+				, #{spt_price}
+				, #{spt_count}
+				, #{spt_delivery_price}
+				, #{sct_color}
+				, #{sct_size}
+				, #{spo_price}
+				, #{spt_seller_id}
+				, #{sct_no}
+				, #{spo_name}
+				, #{spo_phone}
+				, #{spo_post_code}
+				, #{spo_addr1}
+				, #{spo_addr2}
+				, #{spo_msg}
+				, #{spo_payment}
+				, #{spo_ins_no}
+				, sysdate
+				, #{spo_ins_ip})
+	</insert>
+	
+	<delete id="deleteOrderCart" parameterType="kr.co.lnssoft.assistshop.OrderVO">
+		DELETE FROM SHOP_CART
+		 WHERE sct_no = #{sct_no}
+		   AND user_no = #{user_no}
+	</delete>
+</mapper>

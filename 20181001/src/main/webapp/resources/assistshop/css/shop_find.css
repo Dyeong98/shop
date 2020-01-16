@@ -1,0 +1,17 @@
+@charset "EUC-KR";
+.find_contents_margin{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.tel_padding{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+#find_contents{
+	max-width: 500px;
+	padding-top: 50px;
+	margin: auto;
+}
+#findBtn{
+	margin-top: 25px;
+}

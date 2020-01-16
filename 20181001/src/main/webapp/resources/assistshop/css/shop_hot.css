@@ -1,0 +1,12 @@
+@charset "EUC-KR";
+.sort_best_icon{
+	border-radius: 3px;
+	position: absolute;
+	text-align: center;
+	font-size: 12px;
+	padding: 4px;
+	background-color: white;
+	border: 1px solid #ddd;
+	color: black;
+	z-index: 2;
+}

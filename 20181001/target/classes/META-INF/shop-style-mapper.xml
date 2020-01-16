@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="ShopStyleMapper">
+	
+	<select resultType="kr.co.lnssoft.assistshop.StyleTypeVO" id="selectStyleType1">
+		SELECT stt_no ,stt_type_no ,stt_type_nm ,stt_size ,stt_size_no ,stt_size_nm ,stt_comment
+		  FROM shop_style_type
+         WHERE stt_size_no is null
+         ORDER BY stt_type_no
+	</select>
+	
+	<select resultType="kr.co.lnssoft.assistshop.StyleTypeVO" parameterType="java.util.HashMap" id="selectStyleType2">
+        select stt_no, stt_type_no, stt_type_nm, stt_size, stt_size_no, stt_size_nm, stt_comment
+		  from shop_style_type
+		 where stt_size_no is not null
+           and stt_type_no = #{stt_type_no}
+         order by stt_size_no
+	</select>
+	
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="ShopMemberMapper">
+
+	<select id="loginCheck" parameterType="kr.co.lnssoft.shop.MbrVO" resultType="kr.co.lnssoft.shop.MbrVO">
+		select mbr_no, mbr_id, mbr_nm, mbr_tel, mbr_email, mbr_lvl 
+		from mbr 
+		where mbr_id=#{mbr_id} and mbr_pwd = #{mbr_pwd}
+	</select>
+
+</mapper>

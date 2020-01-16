@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="MypageMapper">
+
+	<select id="selectUserAddr" parameterType="kr.co.lnssoft.assistshop.UserVO" resultType="kr.co.lnssoft.assistshop.UserAddrVO">
+		SELECT user_no, sua_name, sua_phone, sua_post_code, sua_addr1, sua_addr2
+		  FROM SHOP_USER_ADDR
+		 WHERE user_no = #{user_no}
+	</select>
+
+	<select id="selectUserAddrCnt" resultType="int" parameterType="java.util.HashMap">
+		SELECT count(user_no) as userCnt
+		  FROM SHOP_USER_ADDR
+		 WHERE user_no = #{user_no}
+	</select>
+	
+	<insert id="insertUserAddr" parameterType="java.util.HashMap">
+		INSERT INTO SHOP_USER_ADDR
+		        ( user_no
+		        , sua_name
+		        , sua_phone
+		        , sua_post_code
+		        , sua_addr1
+		        , sua_addr2
+		        , sua_ins_date
+		        , sua_ins_ip)
+		 VALUES(  #{user_no}
+		        , #{sua_name}
+		        , #{sua_phone}
+		        , #{sua_post_code}
+		        , #{sua_addr1}
+		        , #{sua_addr2}
+		        , sysdate
+		        , #{sua_ins_ip})
+	</insert>
+	
+	<update id="updateUserAddr" parameterType="java.util.HashMap">
+		UPDATE SHOP_USER_ADDR
+	 	   SET sua_name = #{sua_name}
+		     , sua_phone = #{sua_phone}
+		     , sua_post_code = #{sua_post_code}
+		     , sua_addr1 = #{sua_addr1}
+		     , sua_addr2 = #{sua_addr2}
+		     , sua_update_date = sysdate
+		     , sua_update_ip = #{sua_update_ip}
+		 WHERE user_no = #{user_no}
+	</update>
+	
+</mapper>

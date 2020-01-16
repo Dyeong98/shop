@@ -1,0 +1,5 @@
+@charset "EUC-KR";
+#search_result_txt strong{
+	color: #337ab7;
+	font-size: 20px;
+}

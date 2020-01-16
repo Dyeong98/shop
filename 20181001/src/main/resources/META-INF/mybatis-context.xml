@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	
+	<mappers>
+		<mapper resource="META-INF/shop-main-mapper.xml" />
+		<mapper resource="META-INF/shop-login-mapper.xml" />
+		<mapper resource="META-INF/shop-join-mapper.xml" />
+		<mapper resource="META-INF/shop-mypage-mapper.xml" />
+		<mapper resource="META-INF/shop-mysize-mapper.xml" />
+		<mapper resource="META-INF/shop-order-mapper.xml" />
+		<mapper resource="META-INF/shop-cart-mapper.xml" />
+		<mapper resource="META-INF/shop-sort-mapper.xml" />
+		<mapper resource="META-INF/shop-search-mapper.xml" />
+		<mapper resource="META-INF/shop-detail-mapper.xml" />
+		<mapper resource="META-INF/shop-product-list-mapper.xml" />
+		<mapper resource="META-INF/shop-product-add-mapper.xml" />
+		<mapper resource="META-INF/shop-style-mapper.xml" />
+		<mapper resource="META-INF/mybatis-mapper.xml" />
+		<mapper resource="META-INF/shopmbr-mapper.xml" />
+		<mapper resource="META-INF/brdlist-mapper.xml" />
+	</mappers>
+
+</configuration>

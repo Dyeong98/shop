@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="ShopLoginMapper">
+
+	<update id="updateloginTry" parameterType="kr.co.lnssoft.assistshop.UserVO" >
+		UPDATE SHOP_USER 
+		   SET user_logintry_date = sysdate
+             , user_logintry_ip = #{user_logintry_ip}
+		 WHERE user_id = #{user_id}
+	</update>
+	
+	<select resultType="kr.co.lnssoft.assistshop.UserVO" parameterType="kr.co.lnssoft.assistshop.UserVO" id="selectloginUser">
+		select user_no, user_name, user_id, user_level
+		  from shop_user 
+		 where user_id = #{user_id}
+		   and user_pwd = #{user_pwd}
+	</select>
+
+	<update id="updateloginUser" parameterType="kr.co.lnssoft.assistshop.UserVO" >
+		UPDATE SHOP_USER 
+		   SET user_lastlogin_date = sysdate
+             , user_lastlogin_ip = #{user_lastlogin_ip}
+		 WHERE user_id = #{user_id}
+		   AND user_pwd = #{user_pwd}
+	</update>
+	
+	<select resultType="String" parameterType="kr.co.lnssoft.assistshop.UserVO" id="selectfindID">
+		select user_id
+		  from shop_user 
+		 where user_name = #{user_name}
+		   and user_phone = #{user_phone}
+	</select>
+	
+	<select resultType="String" parameterType="kr.co.lnssoft.assistshop.UserVO" id="selectfindPWD">
+		select user_pwd
+		  from shop_user 
+		 where user_name = #{user_name}
+		   and user_id = #{user_id}
+		   and user_phone = #{user_phone}
+	</select>
+	
+</mapper>

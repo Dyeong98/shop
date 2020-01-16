@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="SearchMapper">
+
+	<select id="selectProductSearchList" parameterType="java.util.HashMap" resultType="kr.co.lnssoft.assistshop.ProductVO">
+		<![CDATA[
+			SELECT spt_no, spt_type1_no, spt_type2_no, spt_style_type_no, spt_thumbnail
+                 , spt_name ,spt_price , spt_hits_cnt, spt_like_count, spt_status
+                 , spt_review_cnt, spt_review_avg, spt_seller_id, rn
+			  FROM (SELECT spt_no, spt_type1_no, spt_type2_no, spt_style_type_no, spt_thumbnail
+                         , spt_name ,spt_price , spt_hits_cnt, spt_like_count, spt_status
+                         , spt_review_cnt, spt_review_avg, spt_seller_id, rn
+			          FROM (select spt_no, spt_type1_no, spt_type2_no, spt_style_type_no, spt_thumbnail
+                                 , spt_name ,spt_price , spt_hits_cnt, spt_like_count, spt_status
+                                 , spt_review_cnt, spt_review_avg, spt_seller_id
+			                     , ROW_NUMBER () OVER (ORDER BY spt_no desc) as rn
+			                  from SHOP_PRODUCT
+                             where spt_name like '%' ||  #{stxt} || '%'
+                               and spt_status = 1) origin
+			         where rn <= #{endRNum})
+			 WHERE rn >= #{beginRNum}
+		]]>	
+	</select>
+	
+	<select id="selectProductSearchListTotal" resultType="int" parameterType="java.util.HashMap">
+		SELECT COUNT(spt_no) AS totalCnt
+ 		  FROM SHOP_PRODUCT
+         WHERE spt_name like '%' ||  #{stxt} || '%'
+           AND spt_status = 1
+	</select>
+	
+</mapper>

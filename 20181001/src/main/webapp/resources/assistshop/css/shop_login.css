@@ -1,0 +1,13 @@
+@charset "EUC-KR";
+.form_contents_margin{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+#login_contents_margin{
+	max-width: 500px;
+	padding-top: 120px;
+	margin: auto;
+}
+#user_id, #user_pwd{
+	font-size: 16px;
+}

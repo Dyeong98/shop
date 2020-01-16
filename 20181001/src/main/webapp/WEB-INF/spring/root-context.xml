@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		
+	<bean class="org.apache.tomcat.jdbc.pool.DataSource" id="dataSourceSpied">
+		<property value="oracle.jdbc.driver.OracleDriver" name="driverClassName"/>
+		<property value="jdbc:oracle:thin:@192.168.71.5:1521:ORA11" name="url"/>
+		<property value="SCOTT" name="username"/>
+		<property value="TIGER" name="password"/>
+		<property value="10" name="initialSize"/>
+		<property value="100" name="maxActive"/>
+		<property value="30" name="maxIdle"/>
+		<property value="5" name="minIdle"/>
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+		<property name="dataSource" ref="dataSource"/>
+		<property value="classpath:/META-INF/mybatis-context.xml" name="configLocation"/>
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+		<constructor-arg ref="sqlSessionFactory" index="0"/>
+	</bean>
+	
+	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL         :  "/>
+			</bean>
+		</property>
+	</bean>
+	
+</beans>

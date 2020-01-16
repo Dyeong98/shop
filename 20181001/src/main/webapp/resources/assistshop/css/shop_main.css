@@ -1,0 +1,22 @@
+@charset "EUC-KR";
+.product_nav{
+	display: block;
+}
+
+.product_nav > ul{
+	list-style:none;
+	position: relative;
+	z-index : 2;
+    bottom: 0;
+    left: 50%;
+    margin-left: -93px;
+}
+
+.product_nav > ul li{
+    float: left;
+	padding: 10px;
+}
+
+.product_nav > ul li a{
+    color: rgba(252, 84, 96, 1);
+}

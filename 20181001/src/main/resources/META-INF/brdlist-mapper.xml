@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="BrdListMapper">
+
+	<select id="selectBrdList" parameterType="java.util.HashMap" resultType="kr.co.lnssoft.shop.BrdListVO">
+		<![CDATA[
+			SELECT no, title, writer, write_date, view_cnt, like_cnt, rn
+			  FROM (SELECT no, title, writer, write_date, view_cnt, like_cnt, rn
+			          FROM (select no, title, writer, write_date, view_cnt, like_cnt
+			                     , ROW_NUMBER () OVER (ORDER BY no desc) as rn
+			                  from brd_free) origin
+			         where rn <= #{endRNum})
+			 where rn >= #{beginRNum}
+		]]>	
+	</select>
+	
+	<select id="selectBrdListTotal" resultType="int">
+		select count(no) as totalCnt
+ 		  from brd_free
+	</select>
+	
+	<insert id="insertBrd" parameterType="kr.co.lnssoft.shop.BrdListVO">
+		insert into brd_free (
+			no, title, writer, contents, write_date, view_cnt, like_cnt
+		) values (
+			BRD_FREE_NO_SEQ.nextval
+			, #{title}
+			, #{writer}
+			, #{contents}
+			, sysdate
+			, 0
+			, 0
+		)
+	</insert>
+	
+	<update id="updateBrdViewCnt" parameterType="kr.co.lnssoft.shop.BrdListVO">
+		update brd_free 
+		set view_cnt = view_cnt+1
+		where no = #{no}
+	</update>
+
+	<select id="selectBrdDetail" resultType="kr.co.lnssoft.shop.BrdListVO" parameterType="kr.co.lnssoft.shop.BrdListVO">
+		select no, title, writer, contents, write_date, view_cnt, like_cnt 
+		from brd_free 
+		where no = #{no}
+	</select>
+	
+	<update id="updateLikeCnt" parameterType="kr.co.lnssoft.shop.BrdListVO">
+		update brd_free 
+		set like_cnt = like_cnt+1
+		where no = #{no}
+	</update>
+	
+	<select id="selectLikeCnt"  resultType="java.lang.String" parameterType="kr.co.lnssoft.shop.BrdListVO">
+		select like_cnt 
+		from brd_free
+		where no = #{no}
+	</select>
+	
+	<delete id="deleteBrd" parameterType="kr.co.lnssoft.shop.BrdListVO">
+		delete from brd_free
+		where no = #{no}
+	</delete>
+	
+	<update id="updateBrd" parameterType="kr.co.lnssoft.shop.BrdListVO">
+		update brd_free 
+		set title = #{title}
+		  , writer = #{writer}
+		  , contents = #{contents}
+		  , write_date = sysdate
+		where no = #{no}
+	</update>
+	
+</mapper>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="ShopProductAddMapper">
+
+	<insert parameterType="kr.co.lnssoft.assistshop.ProductVO" id="insertProduct">
+        <selectKey resultType="String" keyProperty="spt_no" order="BEFORE">
+            SELECT SHOP_PRODUCT_PK_SEQ.nextval FROM dual
+        </selectKey>
+		insert into shop_product
+			  	( SPT_NO
+				, SPT_TYPE1_NO
+				, SPT_TYPE2_NO
+				, SPT_STYLE_TYPE_NO
+				, SPT_THUMBNAIL
+				, SPT_NAME
+				, SPT_PRICE
+				, SPT_COUNT
+				, SPT_DELIVERY
+				, SPT_DELIVERY_PRICE
+				, SPT_DETAIL
+				, SPT_STATUS
+				, SPT_SELLER_NO
+				, SPT_SELLER_ID
+				, SPT_INS_NO
+				, SPT_INS_DATE
+				, SPT_INS_IP)
+		values( #{spt_no}
+			  , #{spt_type1_no}
+			  , #{spt_type2_no}
+			  , #{spt_style_type_no}
+			  , #{spt_thumbnail}
+			  , #{spt_name}
+			  , #{spt_price}
+			  , #{spt_count}
+			  , #{spt_delivery}
+			  , #{spt_delivery_price}
+			  , #{spt_detail}
+			  , #{spt_status}
+			  , #{spt_seller_no}
+			  , #{spt_seller_id}
+			  , #{spt_ins_no}
+			  , sysdate
+			  , #{spt_ins_ip})
+	</insert>
+
+	<insert parameterType="kr.co.lnssoft.assistshop.SizeTempVO" id="insertProductSize">
+		insert into shop_product_size
+			  	( SPT_NO
+                , SPT_TYPE1_NO
+                , SPT_TYPE2_NO
+                , STT_TYPE_NO
+                , SPS_SIZE
+                <choose>
+                	<when test="stt_type_no.equals('101') or stt_type_no.equals('102')  or stt_type_no.equals('104')">
+	                  , TOP_TOT_LENG
+	                  , TOP_SHOUL_WID
+	                  , TOP_CHEST_WID
+	                  , TOP_SLEEVE_LENG
+	                </when>
+                	<when test="stt_type_no.equals('103')">
+	                  , TOP_TOT_LENG
+	                  , TOP_SHOUL_WID
+	                  , TOP_CHEST_WID
+	                </when>
+                	<when test="stt_type_no.equals('201') or stt_type_no.equals('202')  or stt_type_no.equals('203') or stt_type_no.equals('204')">
+	                  , OUT_TOT_LENG
+	                  , OUT_SHOUL_WID
+	                  , OUT_CHEST_WID
+	                  , OUT_SLEEVE_LENG
+	                </when>
+                	<when test="stt_type_no.equals('301')">
+	                  , ONE_TOT_LENG
+	                  , ONE_SHOUL_WID
+	                  , ONE_CHEST_WID
+	                  , ONE_SLEEVE_LENG
+	                </when>
+                	<when test="stt_type_no.equals('401') or stt_type_no.equals('402')  or stt_type_no.equals('404')">
+	                  , BOT_OUTSEAM
+	                  , BOT_WAIST_WID
+	                  , BOT_THIGH_WID
+	                  , BOT_RISE
+	                  , BOT_HEM
+	                </when>
+                	<when test="stt_type_no.equals('403')">
+	                  , BOT_OUTSEAM
+	                  , BOT_WAIST_WID
+	                  , BOT_HEM
+	                </when>
+                	<when test="stt_type_no.equals('501')">
+	                  , SHO_FOOT_LENG
+	                  , SHO_FOOT_BALL
+	                  , SHO_ANKLE_HEI
+	                  , SHO_HELL_HEI
+	                </when>
+                	<when test="stt_type_no.equals('601')">
+	                  , UN_WAIST_WID
+	                </when>
+                	<when test="stt_type_no.equals('602')">
+	                  , UN_CUP_SIZE
+	                </when>
+                	<when test="stt_type_no.equals('603')">
+	                  , UN_SOCKS_LENG
+	                </when>
+                	<when test="stt_type_no.equals('701') or stt_type_no.equals('702') or stt_type_no.equals('704') or stt_type_no.equals('706') or stt_type_no.equals('707') or stt_type_no.equals('708')">
+	                  , BAG_HEIGHT
+	                  , BAG_WIDTH
+	                  , BAG_DEPTH
+	                </when>
+                	<when test="stt_type_no.equals('703') or stt_type_no.equals('705')">
+	                  , BAG_HEIGHT
+	                  , BAG_WIDTH
+	                  , BAG_DEPTH
+	                  , BAG_STRAP_LENG
+	                </when>
+                </choose>
+                , SPS_INS_NO
+                , SPS_INS_DATE
+                , SPS_INS_IP)
+		values
+				( #{spt_no}
+                , #{spt_type1_no}
+                , #{spt_type2_no}
+                , #{stt_type_no}
+                , #{sps_size}
+                <choose>
+                	<when test="stt_type_no.equals('101') or stt_type_no.equals('102')  or stt_type_no.equals('104')">
+	                  , #{top_tot_leng}
+	                  , #{top_shoul_wid}
+	                  , #{top_chest_wid}
+	                  , #{top_sleeve_leng}
+	                </when>
+                	<when test="stt_type_no.equals('103')">
+	                  , #{top_tot_leng}
+	                  , #{top_shoul_wid}
+	                  , #{top_chest_wid}
+	                </when>
+                	<when test="stt_type_no.equals('201') or stt_type_no.equals('202')  or stt_type_no.equals('203') or stt_type_no.equals('204')">
+	                  , #{out_tot_leng}
+	                  , #{out_shoul_wid}
+	                  , #{out_chest_wid}
+	                  , #{out_sleeve_leng}
+	                </when>
+                	<when test="stt_type_no.equals('301')">
+	                  , #{one_tot_leng}
+	                  , #{one_shoul_wid}
+	                  , #{one_chest_wid}
+	                  , #{one_sleeve_leng}
+	                </when>
+                	<when test="stt_type_no.equals('401') or stt_type_no.equals('402')  or stt_type_no.equals('404')">
+	                  , #{bot_outseam}
+	                  , #{bot_waist_wid}
+	                  , #{bot_thigh_wid}
+	                  , #{bot_rise}
+	                  , #{bot_hem}
+	                </when>
+                	<when test="stt_type_no.equals('403')">
+	                  , #{bot_outseam}
+	                  , #{bot_waist_wid}
+	                  , #{bot_hem}
+	                </when>
+                	<when test="stt_type_no.equals('501')">
+	                  , #{sho_foot_leng}
+	                  , #{sho_foot_ball}
+	                  , #{sho_ankle_hei}
+	                  , #{sho_hell_hei}
+	                </when>
+                	<when test="stt_type_no.equals('601')">
+	                  , #{un_waist_wid}
+	                </when>
+                	<when test="stt_type_no.equals('602')">
+	                  , #{un_cup_size}
+	                </when>
+                	<when test="stt_type_no.equals('603')">
+	                  , #{un_socks_leng}
+	                </when>
+                	<when test="stt_type_no.equals('701') or stt_type_no.equals('702') or stt_type_no.equals('704') or stt_type_no.equals('706') or stt_type_no.equals('707') or stt_type_no.equals('708')">
+	                  , #{bag_height}
+	                  , #{bag_width}
+	                  , #{bag_depth}
+	                </when>
+                	<when test="stt_type_no.equals('703') or stt_type_no.equals('705')">
+	                  , #{bag_height}
+	                  , #{bag_width}
+	                  , #{bag_depth}
+	                  , #{bag_strap_leng}
+	                </when>
+                </choose>
+                , #{sps_ins_no}
+                , sysdate
+                , #{sps_ins_ip})
+	</insert>
+	
+	<insert parameterType="kr.co.lnssoft.assistshop.ColorVO" id="insertProductColor">
+		<foreach collection="spc_color" item="item" open="insert all" separator=" " close="select * from dual">
+	    into shop_product_color
+			  	( SPT_NO
+				, SPC_COLOR
+				, SPC_INS_NO
+				, SPC_INS_DATE
+				, SPC_INS_IP)
+		values        
+			    ( #{spt_no}
+			  , #{item}
+			  , #{spc_ins_no}
+			  , sysdate
+			  , #{spc_ins_ip})
+    	</foreach>
+	</insert>
+	
+	
+	
+</mapper>

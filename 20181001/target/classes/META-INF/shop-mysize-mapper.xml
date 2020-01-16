@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="ShopMysizeMapper">
+
+	<insert parameterType="kr.co.lnssoft.assistshop.UserSizeTempVO" id="insertUserSize">
+		insert into shop_user_size
+			  	( USER_NO
+                , STT_TYPE_NO
+                , STT_SIZE_NO
+                , USER_SIZE
+                , SUS_INS_NO
+                , SUS_INS_DATE
+                , SUS_INS_IP
+                )
+		values
+				( #{user_no}
+                , #{stt_type_no}
+                , #{stt_size_no}
+                , #{user_size}
+                , #{sus_ins_no}
+                , sysdate
+                , #{sus_ins_ip})
+	</insert>
+
+	<update parameterType="kr.co.lnssoft.assistshop.UserSizeTempVO" id="updateUserSize">
+		UPDATE SHOP_USER_SIZE
+           SET user_no = #{user_no}
+             , stt_type_no = #{stt_type_no}
+             , stt_size_no = #{stt_size_no}
+             , user_size = #{user_size}
+             , sus_update_no = #{sus_update_no}
+             , sus_update_date = sysdate
+             , sus_update_ip = #{sus_update_ip}
+	 	 WHERE user_no = #{user_no}
+           AND stt_type_no = #{stt_type_no}
+           AND stt_size_no = #{stt_size_no}
+	</update>
+	
+</mapper>

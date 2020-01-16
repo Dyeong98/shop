@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="ShopCartMapper">
+
+	<insert parameterType="kr.co.lnssoft.assistshop.CartVO" id="insertUserCart">
+		INSERT INTO SHOP_CART
+			  	( sct_no
+				, user_no
+				, spt_no
+				, spt_thumbnail
+				, spt_name
+				, spt_price
+				, spt_count
+				, spt_delivery_price
+				, sct_color
+				, sct_size
+				, sct_price
+				, spt_seller_id
+				, sct_ins_no
+				, sct_ins_date
+				, sct_ins_ip)
+		values( SHOP_CART_NO_SEQ.nextval
+			  , #{user_no}
+			  , #{spt_no}
+			  , #{spt_thumbnail}
+			  , #{spt_name}
+			  , #{spt_price}
+			  , #{spt_count}
+			  , #{spt_delivery_price}
+			  , #{sct_color}
+			  , #{sct_size}
+			  , #{sct_price}
+			  , #{spt_seller_id}
+			  , #{sct_ins_no}
+			  , sysdate
+			  , #{sct_ins_ip})
+	</insert>
+	
+	<select id="selectuserCart" parameterType="java.util.HashMap" resultType="kr.co.lnssoft.assistshop.CartVO">
+		SELECT sct_no, spt_no, spt_thumbnail, spt_name, spt_price, spt_count, spt_delivery_price
+			 , sct_color, sct_size, sct_price, spt_seller_id, rn
+		  FROM (SELECT sct_no, spt_no, spt_thumbnail, spt_name, spt_price, spt_count, spt_delivery_price
+					 , sct_color, sct_size, sct_price, spt_seller_id, rn
+				  FROM ( SELECT sct_no, spt_no, spt_thumbnail, spt_name, spt_price, spt_count, decode(spt_delivery_price, 0, '배송비무료', spt_delivery_price) as spt_delivery_price
+							  , sct_color, sct_size, sct_price, spt_seller_id
+							  , ROW_NUMBER () OVER (ORDER BY sct_no desc) as rn
+						   FROM SHOP_CART
+						  WHERE user_no = #{user_no}) origin
+		<![CDATA[
+				 WHERE rn <= #{endRNum})
+		 WHERE rn >= #{beginRNum}
+		]]>	
+	</select>
+	
+	
+	<select id="selectuserCartTotal" resultType="int" parameterType="java.util.HashMap">
+		SELECT COUNT(spt_no) AS totalCnt
+ 		  FROM SHOP_CART
+         WHERE user_no = #{user_no}
+	</select>
+	
+	<delete id="deleteCart" parameterType="java.util.Map">
+		DELETE FROM SHOP_CART
+		 WHERE sct_no in 
+		<foreach collection="rowChk" item="item" separator="," open="(" close=")">
+			 #{item}
+		</foreach>
+	</delete>
+	
+	
+</mapper>

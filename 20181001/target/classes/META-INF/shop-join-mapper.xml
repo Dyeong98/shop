@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="ShopJoinMapper">
+	
+	<select resultType="int" parameterType="kr.co.lnssoft.assistshop.UserVO" id="selectjoinIDChk">
+		 select count(*) 
+		   from shop_user
+		  where user_id = #{user_id}
+	</select>
+	
+	<insert parameterType="kr.co.lnssoft.assistshop.UserVO" id="insertjoinUser">
+		insert into shop_user
+			  (USER_NO
+			  , USER_NAME
+			  , USER_ID
+			  , USER_PWD
+			  , USER_PHONE
+			  , USER_BIRTHDAY
+			  , USER_SEX
+			  , USER_LEVEL
+			  , USER_JOIN_DATE
+			  , USER_JOIN_IP)
+		values(SHOP_USER_NO_SEQ.nextval
+			  , #{user_name}
+			  , #{user_id}
+			  , #{user_pwd}
+			  , #{user_phone}
+			  , #{user_birthday}
+			  , #{user_sex}
+			  , 1
+			  , sysdate
+			  , #{user_join_ip})
+	</insert>
+	
+</mapper>
